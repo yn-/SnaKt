@@ -1,0 +1,9 @@
+Command:
+kotlinc -Werror experiments/kotlin/StandaloneExpression.kt -d /tmp/standalone-expression-2.4.20.jar
+
+Exit code: 1
+Output:
+error: warnings found and -Werror specified
+experiments/kotlin/StandaloneExpression.kt:2:5: warning: expression is unused.
+    x
+    ^

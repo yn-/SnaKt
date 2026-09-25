@@ -1,0 +1,9 @@
+Command:
+kotlinc -Werror experiments/kotlin/UnitExpression.kt -d /tmp/unit-expression-2.4.20.jar
+
+Exit code: 1
+Output:
+error: warnings found and -Werror specified
+experiments/kotlin/UnitExpression.kt:1:31: warning: expression is unused.
+fun example(): () -> Unit = { Unit }
+                              ^^^^

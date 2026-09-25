@@ -1,0 +1,6 @@
+Command:
+$HOME/.sdkman/candidates/kotlin/2.3.0/bin/kotlinc -Werror experiments/kotlin/StandaloneExpression.kt -d /tmp/standalone-expression-2.3.0.jar
+
+Exit code: 0
+Output:
+(no stdout or stderr)

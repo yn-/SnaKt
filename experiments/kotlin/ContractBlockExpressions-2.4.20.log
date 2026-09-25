@@ -1,0 +1,12 @@
+Command:
+kotlinc -Werror experiments/kotlin/ContractBlockExpressions.kt -d /tmp/contract-block-2.4.20.jar
+
+Exit code: 1
+Output:
+error: warnings found and -Werror specified
+experiments/kotlin/ContractBlockExpressions.kt:7:9: warning: expression is unused.
+        true
+        ^^^^
+experiments/kotlin/ContractBlockExpressions.kt:8:9: warning: expression is unused.
+        bool
+        ^^^^
