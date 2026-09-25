@@ -38,9 +38,9 @@ fun runFromContext() {
 }
 
 fun `capture local from global lambda capturing`(x: @Borrowed Any) {
-    {
+    <!UNUSED_LAMBDA_EXPRESSION!>{
         var y = x
-    }
+    }<!>
 }
 
 fun `capture local from local receiver lambda capturing`(x: @Borrowed Any) {
@@ -50,11 +50,11 @@ fun `capture local from local receiver lambda capturing`(x: @Borrowed Any) {
 }
 
 fun `capture local from nested global lambda`(x: @Borrowed Any) {
-    {
+    <!UNUSED_LAMBDA_EXPRESSION!>{
         <!LOCALITY_MISMATCH!>{
             var y = x
         }<!>
-    }
+    }<!>
 }
 
 fun `capture local from nested local lambda`(x: @Borrowed Any) {
@@ -249,19 +249,19 @@ fun `resolve shadowing local's owner first`(x: @Borrowed A) {
 }
 
 fun `assign local to local in lambda`(x: @Borrowed Any) {
-    { y: Any ->
+    <!UNUSED_LAMBDA_EXPRESSION!>{ y: Any ->
         var z: @Borrowed Any = x
-    }
+    }<!>
 }
 
 fun `assign local if-expression to local in lambda`(x: @Borrowed Any) {
-    { y: Any ->
+    <!UNUSED_LAMBDA_EXPRESSION!>{ y: Any ->
         var z: @Borrowed Any = if (false) { x } else { Any() }
-    }
+    }<!>
 }
 
 fun `assign local nested control-flow to global in lambda loop`(x: @Borrowed Any) {
-    {
+    <!UNUSED_LAMBDA_EXPRESSION!>{
         var z: Any = Any()
 
         while (true) {
@@ -276,13 +276,13 @@ fun `assign local nested control-flow to global in lambda loop`(x: @Borrowed Any
                 try { Any() } catch (_: Throwable) { x }
             }<!>
         }
-    }
+    }<!>
 }
 
 fun `assign merged local owners to global`(x: @Borrowed Any) {
-    { y: @Borrowed Any ->
+    <!UNUSED_LAMBDA_EXPRESSION!>{ y: @Borrowed Any ->
         var z: Any = <!LOCALITY_MISMATCH!>if (false) { x } else { y }<!>
-    }
+    }<!>
 }
 
 fun `capture local into local anonymous object`(x: @Borrowed A) {
@@ -310,9 +310,9 @@ fun `pass capturing anonymous object as global argument`(x: @Borrowed A) {
 }
 
 fun `pass outer local as local argument in lambda`(x: @Borrowed A) {
-    {
+    <!UNUSED_LAMBDA_EXPRESSION!>{
         borrow(x)
-    }
+    }<!>
 }
 
 fun `return local value from lambda body`(x: @Borrowed Any) {

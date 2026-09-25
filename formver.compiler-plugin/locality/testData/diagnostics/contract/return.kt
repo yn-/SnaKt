@@ -3,10 +3,10 @@
 import org.jetbrains.kotlin.formver.plugin.Borrowed
 
 fun localFunction(): (@Borrowed Any) -> Unit =
-    { _: @Borrowed Any -> Unit }
+    { _: @Borrowed Any -> <!UNUSED_EXPRESSION!>Unit<!> }
 
 fun globalFunction(): (Any) -> Unit =
-    { _: Any -> Unit }
+    { _: Any -> <!UNUSED_EXPRESSION!>Unit<!> }
 
 fun `return global function explicitly`(): (@Borrowed Any) -> Unit {
     return <!LOCALITY_CONTRACT_MISMATCH!>globalFunction()<!>

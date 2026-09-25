@@ -1,3 +1,7 @@
+/assign_local.kt: warning: Expression is unused.
+
+/assign_local.kt: warning: Expression is unused.
+
 /assign_local.kt: error: Assignment locality contract mismatch: expected '[local]', actual '[global]'.
 
 /assign_local.kt: error: Assignment locality contract mismatch: expected '[local]', actual '[global]'.

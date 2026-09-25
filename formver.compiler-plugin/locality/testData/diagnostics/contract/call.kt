@@ -16,16 +16,16 @@ fun requireLocalReceiverFunction(f: (@Borrowed Any).() -> Unit) {}
 fun ((@Borrowed Any) -> Unit).requireLocalFunctionReceiver() {}
 
 fun produceLocalFunction(): (@Borrowed Any) -> Unit =
-    { _: @Borrowed Any -> Unit }
+    { _: @Borrowed Any -> <!UNUSED_EXPRESSION!>Unit<!> }
 
 fun produceGlobalFunction(): (Any) -> Unit =
-    { _: Any -> Unit }
+    { _: Any -> <!UNUSED_EXPRESSION!>Unit<!> }
 
 fun produceGlobalLocalFunction(): (Any, @Borrowed Any) -> Unit =
-    { _: Any, _: @Borrowed Any -> Unit }
+    { _: Any, _: @Borrowed Any -> <!UNUSED_EXPRESSION!>Unit<!> }
 
 fun produceGlobalReceiverFunction(): (Any).() -> Unit =
-    { Unit }
+    { <!UNUSED_EXPRESSION!>Unit<!> }
 
 fun `pass global function as local function argument`() {
     requireLocalFunction(<!LOCALITY_CONTRACT_MISMATCH!>produceGlobalFunction()<!>)

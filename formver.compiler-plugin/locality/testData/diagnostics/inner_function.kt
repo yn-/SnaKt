@@ -3,5 +3,5 @@
 import org.jetbrains.kotlin.formver.plugin.Borrowed
 
 fun outer(x: @Borrowed Any) {
-    fun named() { x }
+    fun named() { <!UNUSED_EXPRESSION!>x<!> }
 }

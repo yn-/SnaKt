@@ -1,8 +1,12 @@
+/closure_capture.kt: warning: Lambda expression is never invoked. To create a scoped block, use 'run { ... }'.
+
+/closure_capture.kt: warning: Lambda expression is never invoked. To create a scoped block, use 'run { ... }'.
+
 /closure_capture.kt: error: Return locality mismatch: expected 'global', actual 'local'.
 
 /closure_capture.kt: error: Initializer locality mismatch: expected 'global', actual 'local'.
 
-/closure_capture.kt: warning: No cast needed.
+/closure_capture.kt: warning: Cast is redundant.
 
 /closure_capture.kt: error: Receiver locality mismatch: expected 'global', actual 'local'.
 
@@ -10,9 +14,17 @@
 
 /closure_capture.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
+/closure_capture.kt: warning: Lambda expression is never invoked. To create a scoped block, use 'run { ... }'.
+
+/closure_capture.kt: warning: Lambda expression is never invoked. To create a scoped block, use 'run { ... }'.
+
+/closure_capture.kt: warning: Lambda expression is never invoked. To create a scoped block, use 'run { ... }'.
+
 /closure_capture.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
 /closure_capture.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
+
+/closure_capture.kt: warning: Lambda expression is never invoked. To create a scoped block, use 'run { ... }'.
 
 /closure_capture.kt: error: Initializer locality mismatch: expected 'global', actual 'local'.
 
@@ -21,6 +33,8 @@
 /closure_capture.kt: error: Unable to capture local 'x' across anonymous object.
 
 /closure_capture.kt: error: Unable to capture local 'x' across anonymous object.
+
+/closure_capture.kt: warning: Lambda expression is never invoked. To create a scoped block, use 'run { ... }'.
 
 /closure_capture.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 

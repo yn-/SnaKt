@@ -1,3 +1,11 @@
+/call.kt: warning: Expression is unused.
+
+/call.kt: warning: Expression is unused.
+
+/call.kt: warning: Expression is unused.
+
+/call.kt: warning: Expression is unused.
+
 /call.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
 
 /call.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
