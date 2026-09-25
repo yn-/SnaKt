@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirConstructorSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirIntersectionOverridePropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
 import org.jetbrains.kotlin.fir.types.*
@@ -502,6 +503,8 @@ class ProgramConverter(
     }
 
     override fun isGuaranteedDefaultProperty(symbol: FirPropertySymbol): Boolean {
+        // A final receiver class does not make an intersection override's inherited accessor default.
+        if (symbol is FirIntersectionOverridePropertySymbol) return false
         val classSymbolFinal = symbol.dispatchReceiverType?.toClassSymbol(session)?.isFinal ?: false
         return (symbol.isFinal || classSymbolFinal) && !symbol.isCustom
     }
