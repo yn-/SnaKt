@@ -15,7 +15,6 @@ allprojects {
 
     tasks.withType<KotlinCompile> {
         compilerOptions {
-            freeCompilerArgs.add("-Xcontext-parameters")
         }
     }
 }
