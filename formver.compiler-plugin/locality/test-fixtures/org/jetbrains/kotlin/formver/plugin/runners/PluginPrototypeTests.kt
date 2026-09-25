@@ -13,7 +13,8 @@ import org.jetbrains.kotlin.formver.plugin.services.LocalityExtensionRegistrarCo
 import org.jetbrains.kotlin.test.FirParser
 import org.jetbrains.kotlin.test.TargetBackend
 import org.jetbrains.kotlin.test.builders.TestConfigurationBuilder
-import org.jetbrains.kotlin.test.configuration.commonServicesConfigurationForCodegenAndDebugTest
+import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
+import org.jetbrains.kotlin.test.directives.CodegenTestDirectives.RUN_DEX_CHECKER
 import org.jetbrains.kotlin.test.directives.DiagnosticsDirectives.RENDER_DIAGNOSTICS_FULL_TEXT
 import org.jetbrains.kotlin.test.directives.FirDiagnosticsDirectives.ENABLE_PLUGIN_PHASES
 import org.jetbrains.kotlin.test.directives.LanguageSettingsDirectives.LANGUAGE
@@ -23,9 +24,17 @@ import org.jetbrains.kotlin.test.frontend.fir.FirCliJvmFacade
 import org.jetbrains.kotlin.test.frontend.fir.FirOutputArtifact
 import org.jetbrains.kotlin.test.frontend.fir.handlers.FirAnalysisHandler
 import org.jetbrains.kotlin.test.frontend.fir.handlers.FirDiagnosticCollectorService
+import org.jetbrains.kotlin.test.model.DependencyKind
 import org.jetbrains.kotlin.test.model.FrontendKinds
 import org.jetbrains.kotlin.test.model.TestModule
 import org.jetbrains.kotlin.test.runners.AbstractKotlinCompilerWithTargetBackendTest
+import org.jetbrains.kotlin.test.services.configuration.CommonEnvironmentConfigurator
+import org.jetbrains.kotlin.test.services.configuration.JvmEnvironmentConfigurator
+import org.jetbrains.kotlin.test.services.configuration.JvmForeignAnnotationsConfigurator
+import org.jetbrains.kotlin.test.services.configuration.ScriptingEnvironmentConfigurator
+import org.jetbrains.kotlin.test.services.fir.FirSpecificParserSuppressor
+import org.jetbrains.kotlin.test.services.sourceProviders.AdditionalDiagnosticsSourceFilesProvider
+import org.jetbrains.kotlin.test.services.sourceProviders.CoroutineHelpersSourceFilesProvider
 import org.jetbrains.kotlin.test.services.*
 
 
@@ -54,7 +63,7 @@ class DiagnosticHandler(testServices: TestServices) : FirAnalysisHandler(testSer
             FirDiagnosticCollectorService(testServices).getFrontendDiagnosticsForModule(info)
 
         module.files.forEach { file ->
-            val testFile = info.allFirFiles[file]!!
+            val testFile = info.allFirFilesByTestFile[file]!!
             val diagnostics = frontendDiagnosticsPerFile[testFile]
             val simpleDiagnostics = diagnostics.map { it.diagnostic }
             testServices.tagCollector.reportDiagnostics(file, simpleDiagnostics)
@@ -71,13 +80,29 @@ class DiagnosticHandler(testServices: TestServices) : FirAnalysisHandler(testSer
 
 abstract class AbstractLocalityDiagnosticTest : AbstractKotlinCompilerWithTargetBackendTest(TargetBackend.JVM_IR) {
     override fun configure(builder: TestConfigurationBuilder) = with(builder) {
+        globalDefaults {
+            frontend = FrontendKinds.FIR
+            targetPlatform = JvmPlatforms.defaultJvmPlatform
+            dependencyKind = DependencyKind.Binary
+        }
         defaultDirectives {
+            +RUN_DEX_CHECKER
             LATEST_PHASE_IN_PIPELINE with TestPhase.FRONTEND
             +ENABLE_PLUGIN_PHASES
             +RENDER_DIAGNOSTICS_FULL_TEXT
             LANGUAGE with "+PropertyParamAnnotationDefaultTargetMode"
         }
-        commonServicesConfigurationForCodegenAndDebugTest(FrontendKinds.FIR)
+        useConfigurators(
+            ::CommonEnvironmentConfigurator,
+            ::JvmForeignAnnotationsConfigurator,
+            ::JvmEnvironmentConfigurator,
+            ::ScriptingEnvironmentConfigurator,
+        )
+        useAdditionalSourceProviders(
+            ::AdditionalDiagnosticsSourceFilesProvider,
+            ::CoroutineHelpersSourceFilesProvider,
+        )
+        useMetaTestConfigurators(::FirSpecificParserSuppressor)
 
         useAdditionalService(::ConversionDiagnosticsCollector)
         useAdditionalService(::LocalityTagsCollector)

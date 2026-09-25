@@ -1,6 +1,7 @@
 package org.jetbrains.kotlin.formver.plugin.services
 
 import org.jetbrains.kotlin.diagnostics.InternalDiagnosticFactoryMethod
+import org.jetbrains.kotlin.diagnostics.DiagnosticBaseContext
 import org.jetbrains.kotlin.diagnostics.KtDiagnostic
 import org.jetbrains.kotlin.diagnostics.SourceElementPositioningStrategies
 import org.jetbrains.kotlin.fir.FirElement
@@ -28,6 +29,10 @@ fun shouldSkipByTestMode(testServices: TestServices): Boolean = when (getTestMod
     TestMode.FULL -> false
 }
 
+private val TestModule.diagnosticContext: DiagnosticBaseContext
+    get() = object : DiagnosticBaseContext {
+        override val languageVersionSettings = this@diagnosticContext.languageVersionSettings
+    }
 
 class ViperProgramVerificationFacade(val testServices: TestServices) :
     AbstractTestFacade<FirOutputArtifact, FirOutputArtifact>() {
@@ -53,7 +58,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
     ): FirOutputArtifact {
         inputArtifact.partsForDependsOnModules.forEach { part ->
             val toVerify: MutableList<Pair<TestFile, FirNamedFunction>> = mutableListOf()
-            part.firFiles.map { (testFile, firFile) ->
+            part.firFilesByTestFile.forEach { (testFile, firFile) ->
                 firFile.accept(object : FirDefaultVisitorVoid() {
                     override fun visitElement(element: FirElement) {
                         when (element) {
@@ -122,7 +127,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
                 VerificationErrors.CONDITIONAL_EFFECT_ERROR.on(
                     source, msg.first, msg.second,
                     positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
-                    languageVersionSettings = module.languageVersionSettings
+                    context = module.diagnosticContext
                 )
             }
 
@@ -131,7 +136,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
                 VerificationErrors.VIPER_VERIFICATION_ERROR.on(
                     source, msg,
                     positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
-                    languageVersionSettings = module.languageVersionSettings
+                    context = module.diagnosticContext
                 )
             }
 
@@ -140,7 +145,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
                 VerificationErrors.POSSIBLE_INDEX_OUT_OF_BOUND.on(
                     source, msg.first, msg.second,
                     positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
-                    languageVersionSettings = module.languageVersionSettings
+                    context = module.diagnosticContext
                 )
             }
 
@@ -149,7 +154,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
                 VerificationErrors.INVALID_SUBLIST_RANGE.on(
                     source, msg.first, msg.second,
                     positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
-                    languageVersionSettings = module.languageVersionSettings
+                    context = module.diagnosticContext
                 )
             }
 
@@ -158,14 +163,14 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
                 VerificationErrors.UNEXPECTED_RETURNED_VALUE.on(
                     source, msg,
                     positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
-                    languageVersionSettings = module.languageVersionSettings
+                    context = module.diagnosticContext
                 )
             }
 
             null -> {
                 VerificationErrors.VIPER_VERIFICATION_ERROR.on(
                     source, err.msg, positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
-                    languageVersionSettings = module.languageVersionSettings
+                    context = module.diagnosticContext
                 )
             }
         }
@@ -180,7 +185,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
         val source = err.position.unwrapOr { decl.source }!!
         val diagnostics = VerificationErrors.CONSISTENCY.on(
             source, err.msg, positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
-            languageVersionSettings = module.languageVersionSettings
+            context = module.diagnosticContext
         )
         return diagnostics!!
     }
