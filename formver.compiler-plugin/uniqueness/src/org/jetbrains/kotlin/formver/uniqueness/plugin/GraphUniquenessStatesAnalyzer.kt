@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.fir.analysis.cfa.util.transformValues
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
+import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
 import org.jetbrains.kotlin.fir.expressions.allReceiverExpressions
 import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.expressions.toResolvedCallableSymbol
@@ -27,7 +28,7 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.JumpNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ThrowExceptionNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationEnterNode
 import org.jetbrains.kotlin.formver.locality.plugin.Locality
 import org.jetbrains.kotlin.formver.locality.plugin.resolveLocality
 import org.jetbrains.kotlin.formver.type.plugin.CallArgumentTypeFactsMapper
@@ -94,8 +95,8 @@ class GraphUniquenessStatesAnalyzer(
         return data.transformValues { data -> data.put(Unit, data.getOrInitialize()) }
     }
 
-    override fun visitVariableDeclarationNode(
-        node: VariableDeclarationNode,
+    override fun visitVariableDeclarationEnterNode(
+        node: VariableDeclarationEnterNode,
         data: PathAwareUniquenessStateFlow
     ): PathAwareUniquenessStateFlow {
         val declaration = node.fir
@@ -164,7 +165,7 @@ class GraphUniquenessStatesAnalyzer(
         node: FunctionCallEnterNode,
         data: PathAwareUniquenessStateFlow
     ): PathAwareUniquenessStateFlow {
-        val call = node.fir
+        val call = node.fir as FirFunctionCall
 
         with(context) {
             return data.transformValues { data ->
@@ -188,7 +189,7 @@ class GraphUniquenessStatesAnalyzer(
         node: FunctionCallExitNode,
         data: PathAwareUniquenessStateFlow
     ): PathAwareUniquenessStateFlow {
-        val call = node.fir
+        val call = node.fir as FirFunctionCall
 
         with(context) {
             return data.transformValues { data ->

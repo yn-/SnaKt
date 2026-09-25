@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.diagnostics.InternalDiagnosticFactoryMethod
 import org.jetbrains.kotlin.diagnostics.KtDiagnostic
 import org.jetbrains.kotlin.diagnostics.SourceElementPositioningStrategies
 import org.jetbrains.kotlin.fir.FirElement
-import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
+import org.jetbrains.kotlin.fir.declarations.FirNamedFunction
 import org.jetbrains.kotlin.fir.visitors.FirDefaultVisitorVoid
 import org.jetbrains.kotlin.formver.common.services.runChecks
 import org.jetbrains.kotlin.formver.core.shouldVerify
@@ -39,7 +39,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
     /**
      * Returns true iff the given [decl] should be verified.
      */
-    fun shouldVerify(decl: FirSimpleFunction, testServices: TestServices): Boolean =
+    fun shouldVerify(decl: FirNamedFunction, testServices: TestServices): Boolean =
         decl.shouldVerify == true && !shouldSkipByTestMode(testServices)
 
     /**
@@ -52,17 +52,17 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
         inputArtifact: FirOutputArtifact
     ): FirOutputArtifact {
         inputArtifact.partsForDependsOnModules.forEach { part ->
-            val toVerify: MutableList<Pair<TestFile, FirSimpleFunction>> = mutableListOf()
+            val toVerify: MutableList<Pair<TestFile, FirNamedFunction>> = mutableListOf()
             part.firFiles.map { (testFile, firFile) ->
                 firFile.accept(object : FirDefaultVisitorVoid() {
                     override fun visitElement(element: FirElement) {
                         when (element) {
-                            is FirSimpleFunction -> visitSimpleFunction(element)
+                            is FirNamedFunction -> visitNamedFunction(element)
                             else -> element.acceptChildren(this)
                         }
                     }
 
-                    override fun visitSimpleFunction(simpleFunction: FirSimpleFunction) {
+                    override fun visitNamedFunction(simpleFunction: FirNamedFunction) {
                         if (shouldVerify(simpleFunction, testServices)) {
                             toVerify.add(Pair(testFile, simpleFunction))
                         }
@@ -90,7 +90,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
     @OptIn(InternalDiagnosticFactoryMethod::class)
     private fun verifyFunction(
         verifier: SiliconFrontend,
-        decl: FirSimpleFunction,
+        decl: FirNamedFunction,
         module: TestModule
     ): List<KtDiagnostic> {
         val results = mutableListOf<KtDiagnostic>()
@@ -112,7 +112,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
 
     @OptIn(InternalDiagnosticFactoryMethod::class)
     private fun formatVerificationError(
-        err: VerificationError, decl: FirSimpleFunction,
+        err: VerificationError, decl: FirNamedFunction,
         module: TestModule
     ): KtDiagnostic {
         val source = err.position.unwrapOr { decl.source }!!
@@ -174,7 +174,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
 
     @OptIn(InternalDiagnosticFactoryMethod::class)
     private fun formatConsistencyError(
-        err: ConsistencyError, decl: FirSimpleFunction,
+        err: ConsistencyError, decl: FirNamedFunction,
         module: TestModule
     ): KtDiagnostic {
         val source = err.position.unwrapOr { decl.source }!!

@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactory1
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
+import org.jetbrains.kotlin.fir.declarations.FirNamedFunction
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
@@ -95,7 +95,7 @@ class ProgramConverter(
     private val callable: MutableMap<SymbolicName, SignatureWithTarget<NamedCallableEmbedding>> = mutableMapOf()
 
     private data class RegisteredFunction(
-        val declaration: FirSimpleFunction,
+        val declaration: FirNamedFunction,
         val signature: CompleteFunctionSignature,
         val returnTarget: ReturnTarget,
     )
@@ -145,7 +145,7 @@ class ProgramConverter(
     /**
      * Embed the declaration's signature and embeds the body.
      */
-    fun register(declaration: FirSimpleFunction) {
+    fun register(declaration: FirNamedFunction) {
         val signature = embedCompleteSignature(declaration.symbol)
         embedFunctionBody(declaration.symbol, signature)
         registered += RegisteredFunction(declaration, signature.signature, signature.returnTarget)
@@ -285,8 +285,8 @@ class ProgramConverter(
     private fun embedFunctionBody(
         symbol: FirFunctionSymbol<*>, signature: SignatureWithTarget<CompleteFunctionSignature>
     ) {
-        val declaration = symbol.fir as? FirSimpleFunction ?: throw SnaktInternalException(
-            symbol.source, "Expected FirSimpleFunction, got unexpected type ${symbol.fir.javaClass.simpleName}"
+        val declaration = symbol.fir as? FirNamedFunction ?: throw SnaktInternalException(
+            symbol.source, "Expected FirNamedFunction, got unexpected type ${symbol.fir.javaClass.simpleName}"
         )
 
         val context = createBodyConversionContext(symbol, signature)
@@ -378,7 +378,7 @@ class ProgramConverter(
          * although ideally we should be able to see preconditions and postconditions
          * from other modules.
          */
-        if (declaration !is FirSimpleFunction || body == null) {
+        if (declaration !is FirNamedFunction || body == null) {
             return Pair(emptyList(), emptyList())
         }
 

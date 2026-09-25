@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.FirLabel
-import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
+import org.jetbrains.kotlin.fir.declarations.FirNamedFunction
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.references.symbol
@@ -243,7 +243,7 @@ internal fun StmtConversionContext.insertQuantifierFunctionCall(
 
 
 fun StmtConversionContext.convertImpureBody(
-    declaration: FirSimpleFunction,
+    declaration: FirNamedFunction,
     signature: NamedFunctionSignatureWithContract,
     returnTarget: ReturnTarget,
 ): ConvertedMethodBody? {
@@ -256,7 +256,7 @@ fun StmtConversionContext.convertImpureBody(
     return ConvertedMethodBody(bodyExp, returnTarget)
 }
 
-fun StmtConversionContext.convertPureBody(declaration: FirSimpleFunction): ExpEmbedding {
+fun StmtConversionContext.convertPureBody(declaration: FirNamedFunction): ExpEmbedding {
     val firBody = declaration.body ?: throw SnaktInternalException(
         declaration.source,
         "Pure functions expect a function body to exist"

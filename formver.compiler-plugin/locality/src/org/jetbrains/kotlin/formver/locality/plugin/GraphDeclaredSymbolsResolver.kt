@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.LocalClassExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.LocalFunctionDeclarationNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationEnterNode
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.utils.addIfNotNull
 
@@ -46,7 +46,7 @@ class GraphDeclaredSymbolsResolver(session: FirSession) : FirExtensionSessionCom
 
         graph.nodes
             .mapNotNull { node ->
-                (node as? VariableDeclarationNode)?.fir?.symbol ?:
+                (node as? VariableDeclarationEnterNode)?.fir?.symbol ?:
                 (node as? LocalFunctionDeclarationNode)?.fir?.symbol ?:
                 (node as? LocalClassExitNode)?.fir?.symbol
             }
@@ -63,7 +63,7 @@ private val FirSession.graphDeclaredSymbolsResolver: GraphDeclaredSymbolsResolve
  * Resolves symbols declared directly by [this] graph.
  *
  * For function graphs this includes receiver, context, and value parameters, and for all graphs it includes symbols
- * introduced by [VariableDeclarationNode] entries in the graph nodes.
+ * introduced by [VariableDeclarationEnterNode] entries in the graph nodes.
  *
  * @param context Is used to access this session's [GraphDeclaredSymbolsResolver].
  *

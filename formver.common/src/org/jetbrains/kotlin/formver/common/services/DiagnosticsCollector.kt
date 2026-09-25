@@ -1,7 +1,6 @@
 package org.jetbrains.kotlin.formver.common.services
 
 import com.intellij.openapi.util.TextRange
-import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
 import org.jetbrains.kotlin.diagnostics.KtDiagnostic
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticWithSource
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticWithoutSource
@@ -42,7 +41,7 @@ abstract class DiagnosticsCollector(val testServices: TestServices) : TestServic
                         is KtDiagnosticWithSource -> it.textRanges
                         is KtDiagnosticWithoutSource -> listOf(it.firstRange)
                     },
-                    severity = AnalyzerWithCompilerReport.convertSeverity(it.severity).toString()
+                    severity = it.severity.toCompilerMessageSeverity().toString()
                         .toLowerCaseAsciiOnly(),
                     message = it.renderMessage()
                 )
@@ -60,7 +59,7 @@ abstract class DiagnosticsCollector(val testServices: TestServices) : TestServic
         for (part in info.partsForDependsOnModules) {
             val currentModule = part.module
             for (file in currentModule.files) {
-                val firFile = info.mainFirFiles[file] ?: continue
+                val firFile = info.mainFirFilesByTestFile[file] ?: continue
                 diagnostics.addAll(frontendDiagnosticsPerFile[firFile].map { it.diagnostic })
             }
         }

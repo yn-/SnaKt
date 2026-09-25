@@ -9,9 +9,9 @@ import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
-import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirSimpleFunctionChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirDeclarationChecker
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
-import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
+import org.jetbrains.kotlin.fir.declarations.FirNamedFunction
 import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.uniqueness.plugin.render
@@ -22,9 +22,10 @@ import org.jetbrains.kotlin.formver.uniqueness.plugin.resolveUniquenessStateFlow
  */
 class FunctionUniquenessStateRenderingChecker(
     private val config: PluginConfiguration
-) : FirSimpleFunctionChecker(MppCheckerKind.Common) {
+) :
+    FirDeclarationChecker<FirNamedFunction>(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
-    override fun check(declaration: FirSimpleFunction) {
+    override fun check(declaration: FirNamedFunction) {
         if (!config.checkUniqueness || !config.dumpUniquenessCFG) return
 
         if (declaration.origin != FirDeclarationOrigin.Source) return

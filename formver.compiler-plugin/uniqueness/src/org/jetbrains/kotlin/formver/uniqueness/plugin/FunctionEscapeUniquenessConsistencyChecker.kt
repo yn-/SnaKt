@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirFunctionChecker
 import org.jetbrains.kotlin.fir.declarations.FirFunction
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
+import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
 import org.jetbrains.kotlin.fir.expressions.allReceiverExpressions
 import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
@@ -33,7 +34,8 @@ fun CFGNode<*>.resolveEscapes(): Sequence<FirExpression> =
             sequenceOf(result)
         }
 
-        is FunctionCallEnterNode -> fir.allReceiverExpressions.asSequence() + fir.arguments
+        is FunctionCallEnterNode ->
+            (fir as FirFunctionCall).allReceiverExpressions.asSequence() + fir.arguments
 
         else -> emptySequence()
     }

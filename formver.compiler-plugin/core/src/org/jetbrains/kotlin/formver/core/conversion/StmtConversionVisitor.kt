@@ -26,6 +26,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.insertCall
 import org.jetbrains.kotlin.formver.core.embeddings.callables.isVerifyFunction
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.GeCharChar
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.GeIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.GtCharChar
@@ -78,10 +79,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     override fun visitResolvedQualifier(
         resolvedQualifier: FirResolvedQualifier, data: StmtConversionContext
     ): ExpEmbedding {
-        if (resolvedQualifier.resolvedType.isUnit) return UnitLit
+        if (resolvedQualifier.accessedObjectSymbol?.classId == StandardClassIds.Unit) return UnitLit
         return handleUnimplementedElement(
             resolvedQualifier.source,
-            "Unsupported resolved qualifier ${resolvedQualifier.symbol?.javaClass?.simpleName ?: "<no symbol>"}",
+            "Unsupported resolved qualifier ${resolvedQualifier.accessedObjectSymbol?.javaClass?.simpleName ?: "<no symbol>"}",
             data
         )
     }
@@ -451,7 +452,6 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         tryResolve(symbol as FirBasedSymbol<*>)?.let { return it }
         val declSymbol = when (symbol) {
             is FirReceiverParameterSymbol -> symbol.containingDeclarationSymbol
-            is FirValueParameterSymbol -> symbol.containingDeclarationSymbol
             else -> throw SnaktInternalException(symbol.source, "Unsupported receiver expression type.")
         }
         tryResolve(declSymbol)?.let { return it }

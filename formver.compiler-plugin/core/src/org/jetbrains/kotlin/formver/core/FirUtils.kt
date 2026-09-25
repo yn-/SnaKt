@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.contracts.FirEffectDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationDataKey
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationDataRegistry
-import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
+import org.jetbrains.kotlin.fir.declarations.FirNamedFunction
 import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.fir.declarations.impl.FirDefaultPropertyGetter
 import org.jetbrains.kotlin.fir.declarations.impl.FirDefaultPropertySetter
@@ -99,5 +99,5 @@ val FirFunctionSymbol<*>.shouldBeInlined
 private object ViperProgram : FirDeclarationDataKey()
 private object ShouldVerify : FirDeclarationDataKey()
 
-var FirSimpleFunction.viperProgram: viper.silver.ast.Program? by FirDeclarationDataRegistry.data(ViperProgram)
-var FirSimpleFunction.shouldVerify: Boolean? by FirDeclarationDataRegistry.data(ShouldVerify)
+var FirNamedFunction.viperProgram: viper.silver.ast.Program? by FirDeclarationDataRegistry.data(ViperProgram)
+var FirNamedFunction.shouldVerify: Boolean? by FirDeclarationDataRegistry.data(ShouldVerify)
