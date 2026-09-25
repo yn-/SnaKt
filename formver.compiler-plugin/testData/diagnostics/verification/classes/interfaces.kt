@@ -167,7 +167,7 @@ abstract class F {
 abstract class H {
     var field: Int = 0
         set(value) {
-            Unit
+            <!UNUSED_EXPRESSION!>Unit<!>
         }
 }
 

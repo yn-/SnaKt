@@ -316,6 +316,8 @@ method testDiamond() returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+/interfaces.kt: warning: Expression is unused.
+
 /interfaces.kt: info: Generated Viper text for testVarVal:
 method con_G() returns (ret_4: Ref)
   ensures isSubtype(typeOf(ret_4), G())

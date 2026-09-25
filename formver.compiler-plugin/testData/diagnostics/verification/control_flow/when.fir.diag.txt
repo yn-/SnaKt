@@ -143,6 +143,8 @@ method unusedResult() returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+/when.kt: warning: Expression is unused.
+
 /when.kt: info: Generated Viper text for whenIs:
 method whenIs(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), Foo())
@@ -202,6 +204,12 @@ method whenSubjectValNested() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
+/when.kt: warning: Expression is unused.
+
+/when.kt: warning: Expression is unused.
+
+/when.kt: warning: Expression is unused.
+
 /when.kt: info: Generated Viper text for whenSubjectVarShadowing:
 method whenSubjectVarShadowing() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
@@ -213,3 +221,5 @@ method whenSubjectVarShadowing() returns (v_ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
+
+/when.kt: warning: Expression is unused.

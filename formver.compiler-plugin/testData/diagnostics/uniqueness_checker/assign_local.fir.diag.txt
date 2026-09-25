@@ -1,3 +1,5 @@
+/assign_local.kt: warning: Expression is unused.
+
 /assign_local.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
 
 /assign_local.kt: error: Argument locality mismatch: expected 'global', actual 'local'.

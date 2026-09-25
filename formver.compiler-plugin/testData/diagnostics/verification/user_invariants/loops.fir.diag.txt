@@ -56,6 +56,10 @@ method test(n: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
+/loops.kt: warning: Expression is unused.
+
+/loops.kt: warning: Expression is unused.
+
 /loops.kt: info: Generated Viper text for loopInsideLoop:
 method loopInsideLoop() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())

@@ -5,9 +5,9 @@ import kotlin.contracts.contract
 @OptIn(ExperimentalContracts::class)
 fun <!VIPER_TEXT!>unverifiableTypeCheck<!>(x: Int?): Boolean {
     contract {
-        <!CONDITIONAL_EFFECT_ERROR!>returns() implies (x is Unit)<!>
+        <!CONDITIONAL_EFFECT_ERROR!>returns() implies (<!IMPOSSIBLE_IS_CHECK_ERROR!>x is Unit<!>)<!>
     }
-    return x is String
+    return <!IMPOSSIBLE_IS_CHECK_ERROR!>x is String<!>
 }
 
 @OptIn(ExperimentalContracts::class)

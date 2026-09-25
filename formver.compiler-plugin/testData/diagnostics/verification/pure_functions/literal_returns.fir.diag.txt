@@ -79,6 +79,8 @@ function verifiedAnnotatedIntLitReturn(par_arg: Ref): Ref
   intToRef(42)
 }
 
+/literal_returns.kt: warning: Expression is unused.
+
 /literal_returns.kt: info: Generated Viper text for verifiedAnnotatedBoolLitReturn:
 function verifiedAnnotatedBoolLitReturn(par_arg: Ref): Ref
   requires isSubtype(typeOf(par_arg), intType())
@@ -90,6 +92,8 @@ function verifiedAnnotatedBoolLitReturn(par_arg: Ref): Ref
 {
   boolToRef(true)
 }
+
+/literal_returns.kt: warning: Expression is unused.
 
 /literal_returns.kt: info: Generated Viper text for verifiedAnnotatedCharLitReturn:
 function verifiedAnnotatedCharLitReturn(par_arg: Ref): Ref
@@ -112,3 +116,5 @@ function verifiedAnnotatedStringLitReturn(par_arg: Ref): Ref
 {
   stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116))
 }
+
+/literal_returns.kt: warning: Expression is unused.

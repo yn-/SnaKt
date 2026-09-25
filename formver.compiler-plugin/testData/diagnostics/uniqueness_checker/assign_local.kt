@@ -10,7 +10,7 @@ fun nondet(): Boolean {
 fun consume(x: @Unique Any) {}
 
 fun `assign local after accessing it as statement`(x: @Unique Any) {
-    x
+    <!UNUSED_EXPRESSION!>x<!>
     val y: @Unique Any = x
 }
 

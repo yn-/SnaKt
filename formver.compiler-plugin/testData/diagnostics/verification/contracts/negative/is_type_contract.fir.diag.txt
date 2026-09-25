@@ -9,6 +9,10 @@ method unverifiableTypeCheck(x: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+/is_type_contract.kt: error: Check for instance is always 'false'.
+
+/is_type_contract.kt: error: Check for instance is always 'false'.
+
 /is_type_contract.kt: info: Generated Viper text for nullableNotNonNullable:
 method nullableNotNonNullable(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))

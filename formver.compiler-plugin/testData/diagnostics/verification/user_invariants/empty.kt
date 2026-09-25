@@ -34,10 +34,10 @@ fun <!VIPER_TEXT!>testInsertedReturn<!>() {
 
 <!INTERNAL_ERROR!>fun testInsertedUnit() {
     preconditions {
-        Unit
+        <!UNUSED_EXPRESSION!>Unit<!>
     }
     postconditions<Unit> {
-        Unit
+        <!UNUSED_EXPRESSION!>Unit<!>
     }
     return
 }<!>

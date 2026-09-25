@@ -19,8 +19,8 @@ fun <!VIPER_TEXT!>test<!>(idx: Int) {
 @Suppress("NOTHING_TO_INLINE")
 inline fun <!VIPER_TEXT!>inlineWithSpecification<!>(bool: Boolean) {
     preconditions {
-        true
-        bool
+        <!UNUSED_EXPRESSION!>true<!>
+        <!UNUSED_EXPRESSION!>bool<!>
     }
 }
 

@@ -32,7 +32,7 @@ fun <!VIPER_TEXT!>annotatedReferenceReturn<!>(x : X) : X {
 @Pure
 fun <!VIPER_TEXT!>verifiedAnnotatedIntLitReturn<!>(arg: Int): Int {
     preconditions {
-        true
+        <!UNUSED_EXPRESSION!>true<!>
         arg >= 42
         arg <= 42
     }
@@ -54,7 +54,7 @@ fun <!VIPER_TEXT!>verifiedAnnotatedBoolLitReturn<!>(arg: Int): Boolean {
         arg >= 0
     }
     postconditions<Boolean> { result ->
-        result
+        <!UNUSED_EXPRESSION!>result<!>
         arg == 0
     }
     return true
@@ -76,7 +76,7 @@ fun <!VIPER_TEXT!>verifiedAnnotatedCharLitReturn<!>(arg: String): Char {
 @Pure
 fun <!VIPER_TEXT!>verifiedAnnotatedStringLitReturn<!>(arg: Boolean): String {
     preconditions {
-        arg
+        <!UNUSED_EXPRESSION!>arg<!>
     }
     postconditions<String> { result ->
         result == "Hello SnaKt"

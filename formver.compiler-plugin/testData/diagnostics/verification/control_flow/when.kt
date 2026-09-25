@@ -65,7 +65,7 @@ fun <!VIPER_TEXT!>unusedResult<!>(): Int {
     val x = when {
         else -> {
             when {
-                else -> 5
+                else -> <!UNUSED_EXPRESSION!>5<!>
             }
             0
         }
@@ -89,7 +89,7 @@ fun <!VIPER_TEXT!>whenSubjectVal<!>(): Int =
 
 fun <!VIPER_TEXT!>whenSubjectValNested<!>() {
     when (val x = 1) {
-        0 -> 0
+        0 -> <!UNUSED_EXPRESSION!>0<!>
         when (val y = 1) {
             1 -> 1
             else -> when (val z = 1) {
@@ -97,14 +97,14 @@ fun <!VIPER_TEXT!>whenSubjectValNested<!>() {
                 x+1 -> 3
                 else -> 4
             }
-        } -> 5
-        else -> 6
+        } -> <!UNUSED_EXPRESSION!>5<!>
+        else -> <!UNUSED_EXPRESSION!>6<!>
     }
 }
 
 fun <!VIPER_TEXT!>whenSubjectVarShadowing<!>() {
     val x = 0
     when (val x = 1) {
-        else -> x
+        else -> <!UNUSED_EXPRESSION!>x<!>
     }
 }

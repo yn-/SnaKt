@@ -13,7 +13,7 @@ fun <!VIPER_TEXT!>test<!>(n: Int) {
     while (it < 10) {
         loopInvariants {
             it <= 10
-            holds
+            <!UNUSED_EXPRESSION!>holds<!>
         }
         it = it + 1
     }
@@ -23,7 +23,7 @@ fun <!VIPER_TEXT!>test<!>(n: Int) {
         while (it < n) {
             loopInvariants {
                 it <= n
-                holds
+                <!UNUSED_EXPRESSION!>holds<!>
             }
             it = it + 1
         }

@@ -29,6 +29,10 @@ method inlineWithSpecification(bool: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
+/simple_precondition.kt: warning: Expression is unused.
+
+/simple_precondition.kt: warning: Expression is unused.
+
 /simple_precondition.kt: info: Generated Viper text for good_call:
 method good_call() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
