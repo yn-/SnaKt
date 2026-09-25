@@ -64,30 +64,32 @@ digraph test {
                 subgraph cluster_6 {
                     color=blue
                     12 [label="Enter block"];
-                    13 [label="Access variable R|<local>/a|"];
-                    14 [label="Access variable R|/A.second|"];
-                    15 [label=< <TABLE BORDER="0"><TR><TD>Variable declaration: lvar y: R|UniquenessAttribute B|</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Before:<BR/>a unique<BR/><BR/>After:<BR/>a unique<BR/>    second moved<BR/>y unique<BR/></TD></TR></TABLE> >];
-                    16 [label="Exit block"];
+                    13 [label=< <TABLE BORDER="0"><TR><TD>Enter variable declaration: lvar y: R|UniquenessAttribute B|</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Before:<BR/>a unique<BR/><BR/>After:<BR/>a unique<BR/>y unique<BR/></TD></TR></TABLE> >];
+                    14 [label="Access variable R|<local>/a|"];
+                    15 [label="Access variable R|/A.second|"];
+                    16 [label=< <TABLE BORDER="0"><TR><TD>Exit variable declaration: lvar y: R|UniquenessAttribute B|</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Before:<BR/>a unique<BR/>y unique<BR/><BR/>After:<BR/>a unique<BR/>    second moved<BR/>y unique<BR/></TD></TR></TABLE> >];
+                    17 [label="Exit block"];
                 }
-                17 [label="Exit when branch result"];
-                18 [label="Enter when branch result"];
+                18 [label="Exit when branch result"];
+                19 [label="Enter when branch result"];
                 subgraph cluster_7 {
                     color=blue
-                    19 [label="Enter block"];
-                    20 [label="Access variable R|<local>/a|"];
-                    21 [label="Access variable R|/A.first|"];
-                    22 [label=< <TABLE BORDER="0"><TR><TD>Variable declaration: lvar x: R|UniquenessAttribute B|</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Before:<BR/>a unique<BR/><BR/>After:<BR/>a unique<BR/>    first moved<BR/>x unique<BR/></TD></TR></TABLE> >];
-                    23 [label="Exit block"];
+                    20 [label="Enter block"];
+                    21 [label=< <TABLE BORDER="0"><TR><TD>Enter variable declaration: lvar x: R|UniquenessAttribute B|</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Before:<BR/>a unique<BR/><BR/>After:<BR/>a unique<BR/>x unique<BR/></TD></TR></TABLE> >];
+                    22 [label="Access variable R|<local>/a|"];
+                    23 [label="Access variable R|/A.first|"];
+                    24 [label=< <TABLE BORDER="0"><TR><TD>Exit variable declaration: lvar x: R|UniquenessAttribute B|</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Before:<BR/>a unique<BR/>x unique<BR/><BR/>After:<BR/>a unique<BR/>    first moved<BR/>x unique<BR/></TD></TR></TABLE> >];
+                    25 [label="Exit block"];
                 }
-                24 [label="Exit when branch result"];
-                25 [label=< <TABLE BORDER="0"><TR><TD>Exit when</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Merge:<BR/>a unique<BR/>    first moved<BR/>    second moved<BR/>x unique<BR/>y unique<BR/></TD></TR></TABLE> >];
+                26 [label="Exit when branch result"];
+                27 [label=< <TABLE BORDER="0"><TR><TD>Exit when</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Merge:<BR/>a unique<BR/>    first moved<BR/>    second moved<BR/>x unique<BR/>y unique<BR/></TD></TR></TABLE> >];
             }
-            26 [label="Access variable R|<local>/a|"];
-            27 [label=< <TABLE BORDER="0"><TR><TD>Jump: ^test R|&lt;local&gt;/a|</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Before:<BR/>a unique<BR/>    first moved<BR/>    second moved<BR/>x unique<BR/>y unique<BR/><BR/>After:<BR/>a moved<BR/>    first moved<BR/>    second moved<BR/>x unique<BR/>y unique<BR/></TD></TR></TABLE> >];
-            28 [label="Stub" style="filled" fillcolor=gray];
-            29 [label="Exit block" style="filled" fillcolor=gray];
+            28 [label="Access variable R|<local>/a|"];
+            29 [label=< <TABLE BORDER="0"><TR><TD>Jump: ^test R|&lt;local&gt;/a|</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Before:<BR/>a unique<BR/>    first moved<BR/>    second moved<BR/>x unique<BR/>y unique<BR/><BR/>After:<BR/>a moved<BR/>    first moved<BR/>    second moved<BR/>x unique<BR/>y unique<BR/></TD></TR></TABLE> >];
+            30 [label="Stub" style="filled" fillcolor=gray];
+            31 [label="Exit block" style="filled" fillcolor=gray];
         }
-        30 [label=< <TABLE BORDER="0"><TR><TD>Exit function test</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Final:<BR/>a moved<BR/>    first moved<BR/>    second moved<BR/>x unique<BR/>y unique<BR/></TD></TR></TABLE> > style="filled" fillcolor=red];
+        32 [label=< <TABLE BORDER="0"><TR><TD>Exit function test</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Final:<BR/>a moved<BR/>    first moved<BR/>    second moved<BR/>x unique<BR/>y unique<BR/></TD></TR></TABLE> > style="filled" fillcolor=red];
     }
     0 -> {1};
     1 -> {2};
@@ -97,7 +99,7 @@ digraph test {
     5 -> {6};
     6 -> {7};
     7 -> {8};
-    8 -> {9 18};
+    8 -> {9 19};
     9 -> {10};
     10 -> {11};
     11 -> {12};
@@ -106,8 +108,8 @@ digraph test {
     14 -> {15};
     15 -> {16};
     16 -> {17};
-    17 -> {25};
-    18 -> {19};
+    17 -> {18};
+    18 -> {27};
     19 -> {20};
     20 -> {21};
     21 -> {22};
@@ -116,10 +118,12 @@ digraph test {
     24 -> {25};
     25 -> {26};
     26 -> {27};
-    27 -> {30};
-    27 -> {28} [style=dotted];
-    28 -> {29} [style=dotted];
+    27 -> {28};
+    28 -> {29};
+    29 -> {32};
     29 -> {30} [style=dotted];
+    30 -> {31} [style=dotted];
+    31 -> {32} [style=dotted];
 
 }
 

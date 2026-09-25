@@ -29,6 +29,7 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.JumpNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ThrowExceptionNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationEnterNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationExitNode
 import org.jetbrains.kotlin.formver.locality.plugin.Locality
 import org.jetbrains.kotlin.formver.locality.plugin.resolveLocality
 import org.jetbrains.kotlin.formver.type.plugin.CallArgumentTypeFactsMapper
@@ -122,11 +123,23 @@ class GraphUniquenessStatesAnalyzer(
 
                 newUniquenessState = leftAccessState.initialize(newUniquenessState)
 
-                if (leftSymbol.source?.kind != KtFakeSourceElementKind.WhenGeneratedSubject) {
-                    newUniquenessState = rightAccessState.move(newUniquenessState)
-                }
-
                 data.put(Unit, newUniquenessState)
+            }
+        }
+    }
+
+    override fun visitVariableDeclarationExitNode(
+        node: VariableDeclarationExitNode,
+        data: PathAwareUniquenessStateFlow
+    ): PathAwareUniquenessStateFlow {
+        val declaration = node.fir
+        if (declaration.symbol.source?.kind == KtFakeSourceElementKind.WhenGeneratedSubject) return data
+        val initializer = declaration.initializer ?: return data
+
+        return with(context) {
+            val rightAccessState = initializer.resolveAccessState()
+            data.transformValues { data ->
+                data.put(Unit, rightAccessState.move(data.getOrInitialize()))
             }
         }
     }
