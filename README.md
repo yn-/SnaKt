@@ -1,3 +1,9 @@
+(This fork follows from an attempt to try SnaKt with Kotlin 2.4.20.
+It consists of quick and dirty changes. It may serve as an indication
+of necessary work, but is not intended to be used directly. The original README follows.)
+
+---------------------------------------
+
 # SnaKt: Kotlin Formal Verification Plugin
 
 [SnaKt](https://github.com/jesyspa/SnaKt) is a plugin for `kotlinc`
